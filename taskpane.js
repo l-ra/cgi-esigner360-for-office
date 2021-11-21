@@ -10,6 +10,7 @@ function log(msg) {
 window.addEventListener("load", function () {
     log("window loaded");
     document.getElementById("add-sig").addEventListener("click", addSignatureHandler)
+    document.getElementById("send-to-sign").addEventListener("click", sendToSignHandler)
     document.getElementById("help-toggle").addEventListener("click", function () {
         document.getElementById("export-help").style.display = "block";
     });
@@ -213,3 +214,12 @@ function eggHandler() {
             })
     })
 }
+
+
+function sendToSignHandler(){
+    var req = {
+        
+    }
+}
+
+
