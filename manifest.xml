@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
-  <Id>4b13217a-0fb0-403d-b9f6-e86ba304b8c6</Id>
+  <Id>e68b2416-66c1-4f33-a2c0-711a32fab0e7</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>CGI IT Czech Republic s.r.o.</ProviderName>
+  <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="CGI eSIgner360 for Office"/>
-  <Description DefaultValue="Začněte podepisovat soubory na jedno kliknutí"/>
-  <IconUrl DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/assets/icon-64.png"/>
-  <SupportUrl DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/help"/>
+  <DisplayName DefaultValue="CGI eSigner360 for Office"/>
+  <Description DefaultValue="Send document to sign with ease"/>
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
+  <SupportUrl DefaultValue="https://localhost:3000/help"/>
   <AppDomains>
-    <AppDomain>https://server.cgi.esigner360.eu</AppDomain>
-    <AppDomain>https://auth.cgi.esigner360.eu</AppDomain>
+    <AppDomain>https://www.contoso.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Document"/>
-    <Host Name="Mailbox"/>
-    <Host Name="Notebook"/>
-    <Host Name="Workbook"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/taskpane.html"/>
+    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -66,14 +62,14 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/assets/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/assets/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/assets/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
-        <bt:Url id="Commands.Url" DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/commands.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://l-ra.github.io/cgi-esigner360-for-office/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://localhost:3000/commands.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
