@@ -1,3 +1,4 @@
+document.write("<h1>hajhou</h1>");
 function log(msg){
     let logElm = document.querySelector("#log")
     logElm.textContent = `${logElm.textContent}\n[${new Date().toISOString()}]: ${msg}`
@@ -11,3 +12,5 @@ Office.initialize = () => {
   isOfficeInitialized = true;
   log("office initialized");
 };
+
+log("js loaded");
