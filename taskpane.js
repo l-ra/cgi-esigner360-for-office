@@ -148,11 +148,12 @@ Office.initialize = function () {
 };
 
 
-
+var sigFieldId = "_podpis_"
 function addSignatureHandler() {
     log("running add signature handler");
     Word.run(function (context) {
         var id = "sigid_" + Math.floor(Math.random() * 1000000000)
+        sigFieldId = id;
         var sigLabel =
             document.getElementById("fldGn").value
             + " " + document.getElementById("fldFn").value
@@ -216,10 +217,138 @@ function eggHandler() {
 }
 
 
-function sendToSignHandler(){
-    var req = {
-        
+function sendToSignHandler() {
+    // load pdf data
+    var pdfFile = document.getElementById("pdf").files[0];
+    const reader = new FileReader();
+    reader.addEventListener("load", function () {
+        next1(reader.result.replace(/^[^,]+,/,""));
+    }, false);
+    reader.readAsDataURL(pdfFile);
+
+
+    // prepare params for request replacements
+    function next1(pdfData) {
+        var params = {
+            gn:document.getElementById("fldGn").value,
+            fn:document.getElementById("fldFn").value,
+            birthYear:document.getElementById("fldBirthYear").value,
+            email:document.getElementById("fldEmail").value,
+            mobile:document.getElementById("fldMobile").value,
+            invChan:"none",
+            documentName:"dokument-k-podpisu",
+            documentContent:pdfData,
+            sigType:"hand",
+            signFieldPattern: sigFieldId
+        }
+        console.log(JSON.stringify(params,null,2));
+
+        prepareRequest(params,next2)
+    }
+
+
+    // send request
+    function next2(requestBody) {
+        var accessToken = JSON.parse(localStorage["session"]).tokenResponse.access_token
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "https://server.cgi.esigner360.eu/esigner360/EsignRestApi/v1/PrepareTransaction", true);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('x-biosignauthorization', accessToken);        
+        xhr.onreadystatechange = function () {//Call a function when the state changes.
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var responseJson = xhr.responseText;
+                console.log(responseJson)
+                var response = JSON.parse(responseJson)
+                transactionId = response.Data;
+                console.log(transactionId);
+                checkTxStatus(transactionId);
+            }
+        }
+        xhr.send(requestBody);    
     }
 }
 
+
+function checkTxStatus(transactionId) {
+    var accessToken = JSON.parse(localStorage["session"]).tokenResponse.access_token
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "https://server.cgi.esigner360.eu/esigner360/EsignRestApi/v1/Transaction/"+transactionId, true);
+    xhr.setRequestHeader('x-biosignauthorization', accessToken);        
+    xhr.onreadystatechange = function () {//Call a function when the state changes.
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var responseJson = xhr.responseText;
+            //console.log(responseJson)
+            var dto = JSON.parse(responseJson)
+            processDto(dto, function (continueChecking) {
+                if (continueChecking) {
+                    setTimeout(function () { checkTxStatus(transactionId) }, 5000);                                       
+                }
+            })
+        }
+        if (xhr.readyState == 4 && xhr.status == 404) {
+            setTimeout(function () { checkTxStatus(transactionId) }, 1000);
+        }
+    }
+
+    xhr.send();    
+}
+
+function processDto(dto, continueChecking) {
+    var elm = document.getElementById("tx-state");
+
+    elm.innerHTML = dto.presentState + "<br>" + dto.clientStates[0].state
+    
+    if (dto.state === "Finalized") {
+        elm.innerHTML="<h3>SIGNED!</h3><p>...getting signed PDF</p>"
+        downloadPdf(dto.sections[0].documents[0].dfid, function () {
+            continueChecking(false)
+        });
+    } else {
+        continueChecking(true);
+    }
+}
+
+
+function downloadPdf(dfid, resolve) {
+    var accessToken = JSON.parse(localStorage["session"]).tokenResponse.access_token
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "https://server.cgi.esigner360.eu/esigner360/EsignRestApi/v1/Object/"+dfid, true);
+    xhr.setRequestHeader('x-biosignauthorization', accessToken);
+    xhr.responseType = "blob"
+    xhr.onreadystatechange = function () {//Call a function when the state changes.
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var responseBlob = xhr.response;
+            var elm = document.getElementById("tx-state");
+            elm.innerHTML="<h3>SIGNED!</h3><p><a download='signed.pdf' href='"+URL.createObjectURL(responseBlob)+"'>Download signed PDF</a></p>"
+        }
+    }
+    xhr.send();    
+    
+}
+
+
+
+function fetchRequestTemplate(resolve) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "request-template.json", true);
+    xhr.onreadystatechange = function () {//Call a function when the state changes.
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = xhr.responseText;
+            resolve(response);
+        }
+    }
+    xhr.send();
+}
+
+function prepareRequest(params,resolve) {
+    fetchRequestTemplate(function (template) {
+        var workTemplate = template;
+        for (var key in params){
+            var paramVal = params[key];
+            console.log("replacing key",key)
+            workTemplate = workTemplate.replace("##" + key + "##", paramVal);
+        }
+        resolve(workTemplate)
+    })
+}
 

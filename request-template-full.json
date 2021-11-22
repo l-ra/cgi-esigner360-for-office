@@ -1,0 +1,80 @@
+{
+  "name": "Elektronický podpis prihlášky",
+  "externalId": "1253275",
+  "invokingUser": {
+    "id": "12345"
+  },
+  "startTransaction": true,
+  "clients": [
+    {
+      "forename": "##gn##",
+      "surname": "##fn##",
+      "birthYear": "##birthYear##",
+      "personalId": "1",
+      "externalId": "N/A",
+      "email": "##email##",
+      "phone": "##mobile##",
+      "preferedLang": "en",
+      "signingRequestText": "{ \"subject\":\"Document is ready to be signed\", \"body\":\"You can sign the document on the following link. You will be able to review the document and then sign it. You can open a signing application by clicking following link: \"}",
+      "signingRequestChannel": "##invChan##"
+    }
+  ],
+  "prerequisites": [
+    {
+      "personalId": "7ce82f91-4bdb-4e8f-9d43-4346f27c8bbf",
+      "externalId": "840720/0560",
+      "type": "agreement",
+      "title": "Súhlas so spracovaním osobných údajov pre elektronický podpis",
+      "text": "Týmto beriem na vedomie, že elektronickým podpísaním prihlášky na vznik verejného zdravotného poistenia alebo zmenu zdravotnej poisťovne v prospech Union zdravotnej poisťovne, a.s., spoločnosť Union zdravotná poisťovňa, a.s., so sídlom Karadžičova 10, 814 53 Bratislava, IČO: 36284831, bude spracúvať moje osobné údaje, ktoré sa týkajú biometrickej charakteristiky môjho podpisu a ktorými sú najmä: celková dĺžka riadkov v podpise, priemerná rýchlosť podpisovania, celkový čas potrebný na vloženie podpisu, počet prerušení, či počet bodov zachytených za sekundu, a to za účelom preukazovania, uplatňovania alebo obhajovania právnych nárokov spoločnosti Union zdravotná poisťovňa, a.s. Právny základ pre takéto spracúvanie je uvedený v článku 9 ods. 2 písm. f) Nariadenia Európskeho parlamentu a Rady (EÚ) 2016/679 z 27. apríla 2016 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov."
+    },
+    {
+      "personalId": "7ce82f91-4bdb-4e8f-9d43-4346f27c8bbf",
+      "externalId": "980930/7453",
+      "type": "identity-card-check",
+      "title": "Fotografia občianskeho preukazu",
+      "text": "Za účelom identifikácie a overenia osoby, ktorá elektronicky podpisuje prihlášku na vznik verejného zdravotného poistenia alebo zmenu zdravotnej poisťovne v prospech Union zdravotnej poisťovne, a.s., je povinným atribútom fotografia platného občianskeho preukazu. Fotografia slúži výlučne na identifikáciu osoby na tento úkon a nebude použitá na iný účel alebo inak spracovaná.",
+      "configuration":{
+			"image": true,  //id card image must be taken
+			"detection": true, //id card heuristic must confirm the image conatains idcard 
+			"ocrFrontPage": false, // do front page OCR, include result in DTO 
+			"ocrBackPage": false,  // do back page OCR, include result in DTO
+			"ocrMRZ": true, // do MRZ OCR and check digits validation, include result in DTO
+			"checkIdValidity": false, // based on MRZ OCR output – expired OP is refused
+			"crossCheckMrzFrontPage": false, //  MRZ data and  front page OCR result - must be in sync
+			"crossCheckMrzSignerData": true, // MRZ data and signer data must be in sync
+			"embedImage": true, //embeds image into encypted siganture data
+			"publishImage": true //publish image to be accessible for download          
+      } 
+    }
+  ],
+  "documents": [
+    {
+      "name": "Prihláška",
+      "content": "...",
+      "signers": [
+        {
+          "personalId": "7ce82f91-4bdb-4e8f-9d43-4346f27c8bbf",
+          "relation": "must-sign",
+          "signFields": [
+            {
+              "type": "hand",
+              "allowedHandDeviceTypes": [
+                "pen",
+                "touch"
+              ],
+              "pageIndex": 0,
+              "topLeft": {
+                "x": 402.375,
+                "y": 666.75
+              },
+              "bottomRight": {
+                "x": 562.875,
+                "y": 752.25
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

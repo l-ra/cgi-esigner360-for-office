@@ -1,0 +1,57 @@
+{
+  "name": "Document signing",
+  "externalId": "1253275",
+  "invokingUser": {
+    "id": "12345"
+  },
+  "startTransaction": true,
+  "clients": [
+    {
+      "forename": "##gn##",
+      "surname": "##fn##",
+      "birthYear": "##birthYear##",
+      "personalId": "1",
+      "externalId": "N/A",
+      "email": "##email##",
+      "phone": "##mobile##",
+      "preferedLang": "en",
+      "signingRequestText": "{ \"subject\":\"Document is ready to be signed\", \"body\":\"You can sign the document on the following link. You will be able to review the document and then sign it. You can open a signing application by clicking following link: \"}",
+      "signingRequestChannel": "##invChan##"
+    }
+  ],
+  "prerequisites": [],
+  "documents": [
+    {
+      "name": "##documentName##",
+      "content": "##documentContent##",
+      "signers": [
+        {
+          "personalId": "1",
+          "relation": "must-sign",
+          "signFields": [
+            {
+              "type": "##sigType##",
+              "allowedHandDeviceTypes": [
+                "pen",
+                "touch",
+                "mouse"
+              ],
+              "autocreate":true,
+              "useTextPlaceholder":{
+                  "pattern":"##signFieldPattern##",
+                  "centerOffset":{
+                      "x":72,
+                      "y":36
+                  },
+                  "size": {
+                      "w": 144,
+                      "h": 72
+                  }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
